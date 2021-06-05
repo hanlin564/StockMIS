@@ -16,7 +16,8 @@ public class StockMisApplication {
     public static void main(String[] args) {
         SpringApplicationBuilder builder = new SpringApplicationBuilder(StockMisApplication.class);
         ApplicationContext context = builder.headless(false).run(args);
-        context.getBean(LoginFram.class);
+        LoginFram loginFram = context.getBean(LoginFram.class);
+        loginFram.setVisible(true);
     }
 
 }
