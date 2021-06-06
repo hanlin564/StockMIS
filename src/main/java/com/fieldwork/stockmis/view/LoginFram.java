@@ -2,6 +2,7 @@ package com.fieldwork.stockmis.view;
 
 import com.fieldwork.stockmis.service.UserService;
 import com.fieldwork.stockmis.utils.SpringUtil;
+import com.fieldwork.stockmis.utils.StockConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Component;
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * @author whl
@@ -76,6 +76,11 @@ public class LoginFram extends JFrame {
         panel.add(loginButton);
     }
 
+    /**
+     * 对用户名密码进行校验<br>
+     * 若正确，则进入主界面并关闭登录界面<br>
+     * 若错误，则进入错误提示界面
+     */
     private void checkIdAndPassword() {
         //获取用户输入的用户名、密码
         String userId = idFiled.getText();
@@ -84,6 +89,8 @@ public class LoginFram extends JFrame {
         //校验用户名密码
         if (userService.login(userId, password)) {
             log.info("登录成功");
+
+            StockConstant.constantMap.put("userId", userId);
 
             //开启主界面
             MainFram mainFram = SpringUtil.getBean(MainFram.class);
