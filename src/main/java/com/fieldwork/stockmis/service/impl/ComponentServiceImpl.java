@@ -60,6 +60,36 @@ public class ComponentServiceImpl implements ComponentService {
 
     @Override
     public Boolean takeFromStorage(Operation outputOperation, Component component) {
-        return null;
+        try {
+
+
+            if (componentDao.getComponentCountById(component.getComponentId()) == 0) {
+                log.error("出库失败，此配件不在数据库中");
+                return false;
+            }
+            Component c = componentDao.getComponentById(component.getComponentId());
+            int currCount = c.getCount();
+            int afterCount;
+            if ((afterCount = currCount - outputOperation.getCount()) < 0) {
+                log.error("出库数量多于现存数量");
+                return false;
+            } else if (afterCount == 0) {
+                //删除配件表中的记录
+                componentDao.deleteComponentById(c.getComponentId());
+                //删除位置表中的记录
+                positionDao.deletePositionByComponentId(c.getComponentId());
+                //向操作表中新增一条记录
+                operationDao.insertAnOperationRecord(outputOperation);
+                return true;
+            } else {
+                componentDao.updateCompenentCount(c.getComponentId(), -outputOperation.getCount());
+                //向操作表中新增一条记录
+                operationDao.insertAnOperationRecord(outputOperation);
+                return true;
+            }
+        } catch (Exception e) {
+            log.error("出库失败: {}", e.getMessage());
+            return false;
+        }
     }
 }

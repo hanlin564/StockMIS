@@ -12,6 +12,6 @@ public class Component {
     String componentClass;
     String componentSpecies;
     String componentType;
-    String count;
+    Integer count;
 
 }

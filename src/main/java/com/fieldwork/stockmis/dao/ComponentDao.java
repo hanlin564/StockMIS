@@ -28,4 +28,29 @@ public interface ComponentDao {
      * 成功，返回true；失败，返回false
      */
     Boolean insertAnCompoent(Component component);
+
+    /**
+     * 通过id查询对应的配件信息
+     * @param componentId
+     * @return
+     * 返回配件信息；若没查到则返回null
+     */
+    Component getComponentById(@Param("componentId") Integer componentId);
+
+    /**
+     * 根据id删除对应的配件信息
+     * @param componentId
+     * @return
+     * 成功，返回true；失败，返回false
+     */
+    Boolean deleteComponentById(@Param("componentId") Integer componentId);
+
+    /**
+     * 通过配件号查询配件记录的条数
+     * @param componentId
+     * @return
+     * 返回0，说明这配件不在仓库中<br>
+     * 返回1，说明这配件在仓库中
+     */
+    Integer getComponentCountById(@Param("componentId") Integer componentId);
 }

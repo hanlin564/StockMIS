@@ -3,6 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fieldwork.stockmis.dao.ComponentDao">
+    <resultMap id="ComponentMap" type="com.fieldwork.stockmis.entity.Component">
+        <result property="componentId" column="component_id"/>
+        <result property="componentClass" column="class"/>
+        <result property="componentSpecies" column="species"/>
+        <result property="componentType" column="type"/>
+        <result property="count" column="count"/>
+    </resultMap>
+
     <update id="updateCompenentCount">
         update component set count = count + #{addOrMinusCount} where component_id = #{componentId}
     </update>
@@ -10,4 +18,16 @@
     <insert id="insertAnCompoent">
         insert into component (component_id, class, species, type, count) VALUES (#{componentId}, #{componentClass}, #{componentSpecies}, #{componentType}, #{count})
     </insert>
+
+    <select id="getComponentById" resultMap="ComponentMap">
+        select component_id, class, species, type, count from component where component_id = #{componentId}
+    </select>
+
+    <delete id="deleteComponentById">
+        delete from component where component_id = #{componentId}
+    </delete>
+
+    <select id="getComponentCountById" resultType="int">
+        select count(1) from component where component_id = #{componentId}
+    </select>
 </mapper>

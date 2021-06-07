@@ -32,4 +32,12 @@ public interface PositionDao {
      * 成功，返回true；失败，返回false
      */
     Boolean insertAPositionRecord(@Param("stockNo") Integer stockNo, @Param("partNo") Integer partNo, @Param("shelfNo") Integer shelfNo, @Param("tierNo") Integer tierNo, @Param("componentId") Integer componentId);
+
+    /**
+     * 根据配件号删除一条位置信息
+     * @param componentId
+     * @return
+     * 成功，返回true；失败，返回false
+     */
+    Boolean deletePositionByComponentId(@Param("componentId") Integer componentId);
 }

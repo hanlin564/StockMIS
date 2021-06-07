@@ -10,4 +10,8 @@
     <insert id="insertAPositionRecord">
         insert into position (stock_no, part_no, shelf_no, tier_no, component_id) values (#{stockNo}, #{partNo}, #{shelfNo}, #{tierNo}, #{componentId});
     </insert>
+
+    <delete id="deletePositionByComponentId">
+        delete from position where component_id = #{componentId}
+    </delete>
 </mapper>

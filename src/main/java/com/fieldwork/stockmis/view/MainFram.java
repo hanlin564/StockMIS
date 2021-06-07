@@ -312,7 +312,7 @@ public class MainFram extends JFrame {
      */
     private Operation generateAnOperationObject(Integer type) {
         Operation operation = new Operation();
-        operation.setType(0);
+        operation.setType(type);
         operation.setUserId(userId);
         operation.setTime(new Date());
         operation.setComponentId(Integer.valueOf(componentIdField.getText()));
@@ -333,7 +333,7 @@ public class MainFram extends JFrame {
         component.setComponentClass(classField.getText());
         component.setComponentSpecies(speciesField.getText());
         component.setComponentType(typeField.getText());
-        component.setCount(countField.getText());
+        component.setCount(Integer.valueOf(countField.getText()));
 
         log.info(component.toString());
 
