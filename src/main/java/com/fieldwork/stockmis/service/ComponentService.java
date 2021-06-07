@@ -1,5 +1,6 @@
 package com.fieldwork.stockmis.service;
 
+import com.fieldwork.stockmis.entity.Component;
 import com.fieldwork.stockmis.entity.Operation;
 
 /**
@@ -9,12 +10,26 @@ import com.fieldwork.stockmis.entity.Operation;
 public interface ComponentService {
 
     /**
-     * 根据inputOperation的描述，对配件进行入库操作
+     * 对配件进行入库操作
      * @param inputOperation
      * inputOperation为入库操作的详细信息
+     * @param component
+     * component为配件的详细信息
      * @return
      * 入库成功，返回true<br>
      * 入库失败，返回false
      */
-    Boolean putInStorage(Operation inputOperation);
+    Boolean putInStorage(Operation inputOperation, Component component);
+
+    /**
+     * 对指定配件进行出库操作
+     * @param outputOperation
+     * outputOperation为出库操作的详细信息
+     * @param component
+     * component为配件的详细信息
+     * @return
+     * 出库成功，返回true<br>
+     * 出库失败，返回false
+     */
+    Boolean takeFromStorage(Operation outputOperation, Component component);
 }

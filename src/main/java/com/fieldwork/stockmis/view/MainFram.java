@@ -3,7 +3,12 @@ package com.fieldwork.stockmis.view;
 import com.fieldwork.stockmis.entity.Operation;
 import com.fieldwork.stockmis.service.ComponentService;
 import com.fieldwork.stockmis.utils.DateChooser;
+import com.fieldwork.stockmis.utils.SpringUtil;
 import com.fieldwork.stockmis.utils.StockConstant;
+import com.fieldwork.stockmis.view.operationResult.InputFallFram;
+import com.fieldwork.stockmis.view.operationResult.InputSuccessFram;
+import com.fieldwork.stockmis.view.operationResult.OutputFallFram;
+import com.fieldwork.stockmis.view.operationResult.OutputSuccessFram;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,6 +41,9 @@ public class MainFram extends JFrame {
     private JTextField shelfNoField;
     private JTextField tierNoField;
     private JTextField countField;
+    private JTextField classField;
+    private JTextField speciesField;
+    private JTextField typeField;
 
 
     public MainFram() {
@@ -107,17 +115,45 @@ public class MainFram extends JFrame {
         countField.setBounds(420, 168, 130, 30);
         panel.add(countField);
 
+        JLabel classLable = new JLabel("大类:");
+        classLable.setBounds(370, 195, 50, 30);
+        panel.add(classLable);
+
+        classField = new JTextField();
+        classField.setBounds(420, 195, 130, 30);
+        panel.add(classField);
+
+        JLabel speciesLable = new JLabel("种:");
+        speciesLable.setBounds(370, 222, 50, 30);
+        panel.add(speciesLable);
+
+        speciesField = new JTextField();
+        speciesField.setBounds(420, 222, 130, 30);
+        panel.add(speciesField);
+
+        JLabel typeLable = new JLabel("型号:");
+        typeLable.setBounds(370, 249, 50, 30);
+        panel.add(typeLable);
+
+        typeField = new JTextField();
+        typeField.setBounds(420, 249, 130, 30);
+        panel.add(typeField);
+
         //入库按钮
         JButton inputButton = new JButton("入库");
         inputButton.setBounds(580, 33, 80, 80);
         inputButton.addActionListener((event) -> {
             Operation inputOperation = generateAnOperationObject(0);
-            if (componentService.putInStorage(inputOperation)) {
+            com.fieldwork.stockmis.entity.Component component = generateAComponentObject();
+
+            if (componentService.putInStorage(inputOperation, component)) {
                 log.info("入库成功");
-                //todo:成功和失败都弹出相应的窗口进行提示
+                InputSuccessFram inputSuccessFram = SpringUtil.getBean(InputSuccessFram.class);
+                inputSuccessFram.setVisible(true);
             } else {
                 log.error("入库失败");
-
+                InputFallFram inputFallFram = SpringUtil.getBean(InputFallFram.class);
+                inputFallFram.setVisible(true);
             }
 
         });
@@ -126,6 +162,20 @@ public class MainFram extends JFrame {
         //出库按钮
         JButton outputButton = new JButton("出库");
         outputButton.setBounds(580, 120, 80, 80);
+        outputButton.addActionListener((event) -> {
+            Operation outputOperation = generateAnOperationObject(1);
+            com.fieldwork.stockmis.entity.Component component = generateAComponentObject();
+
+            if (componentService.takeFromStorage(outputOperation, component)) {
+                log.info("出库成功");
+                OutputSuccessFram outputSuccessFram = SpringUtil.getBean(OutputSuccessFram.class);
+                outputSuccessFram.setVisible(true);
+            } else {
+                log.error("出库失败");
+                OutputFallFram outputFallFram = SpringUtil.getBean(OutputFallFram.class);
+                outputFallFram.setVisible(true);
+            }
+        });
         panel.add(outputButton);
 
         JLabel IDsearchLable = new JLabel("配件号:");
@@ -266,7 +316,7 @@ public class MainFram extends JFrame {
         operation.setUserId(userId);
         operation.setTime(new Date());
         operation.setComponentId(Integer.valueOf(componentIdField.getText()));
-        operation.setCount(Integer.valueOf((countField.getText())));
+        operation.setCount(Integer.valueOf(countField.getText()));
         operation.setStockNo(Integer.valueOf(stockNoField.getText()));
         operation.setPartNo(Integer.valueOf(partNoField.getText()));
         operation.setShelfNo(Integer.valueOf(shelfNoField.getText()));
@@ -275,6 +325,19 @@ public class MainFram extends JFrame {
         log.info(operation.toString());
 
         return operation;
+    }
+
+    private com.fieldwork.stockmis.entity.Component generateAComponentObject() {
+        com.fieldwork.stockmis.entity.Component component = new com.fieldwork.stockmis.entity.Component();
+        component.setComponentId(Integer.valueOf(componentIdField.getText()));
+        component.setComponentClass(classField.getText());
+        component.setComponentSpecies(speciesField.getText());
+        component.setComponentType(typeField.getText());
+        component.setCount(countField.getText());
+
+        log.info(component.toString());
+
+        return component;
     }
 
 }

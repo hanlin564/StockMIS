@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fieldwork.stockmis.dao.ComponentDao">
+    <update id="updateCompenentCount">
+        update component set count = count + #{addOrMinusCount} where component_id = #{componentId}
+    </update>
+
+    <insert id="insertAnCompoent">
+        insert into component (component_id, class, species, type, count) VALUES (#{componentId}, #{componentClass}, #{componentSpecies}, #{componentType}, #{count})
+    </insert>
+</mapper>

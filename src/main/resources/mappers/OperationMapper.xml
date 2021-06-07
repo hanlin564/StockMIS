@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fieldwork.stockmis.dao.OperationDao">
+    <insert id="insertAnOperationRecord" parameterType="com.fieldwork.stockmis.entity.Operation">
+        insert into operation(type, user_id, time, component_id, count, stock_no, part_no, shelf_no, tier_no)
+        VALUES (#{type}, #{userId}, #{time}, #{componentId}, #{count}, #{stockNo}, #{partNo}, #{shelfNo}, #{tierNo})
+    </insert>
+</mapper>

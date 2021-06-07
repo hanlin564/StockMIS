@@ -1,4 +1,4 @@
-package com.fieldwork.stockmis.view;
+package com.fieldwork.stockmis.view.operationResult;
 
 import org.springframework.stereotype.Component;
 
@@ -7,20 +7,19 @@ import java.awt.*;
 
 /**
  * @author whl
- * @date 2021/6/5 17:08
+ * @date 2021/6/7 16:08
  */
 @Component
-public class LoginFallFram extends JFrame {
-    public LoginFallFram() {
+public class OutputSuccessFram extends JFrame{
+    public OutputSuccessFram() {
         setSize(200, 150);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new BorderLayout());
 
         add(panel);
-        JLabel loginFall = new JLabel("账号或密码错误！", JLabel.CENTER);
+        JLabel loginFall = new JLabel("出库成功！", JLabel.CENTER);
         loginFall.setForeground(Color.RED);
         panel.add(loginFall, BorderLayout.CENTER);
-
     }
 }

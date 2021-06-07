@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fieldwork.stockmis.dao.PositionDao">
+    <select id="getComponentIdByPosition" resultType="int">
+        select component_id from position where stock_no = #{stockNo} and part_no = #{partNo} and shelf_no = #{shelfNo} and tier_no = #{tierNo}
+    </select>
+
+    <insert id="insertAPositionRecord">
+        insert into position (stock_no, part_no, shelf_no, tier_no, component_id) values (#{stockNo}, #{partNo}, #{shelfNo}, #{tierNo}, #{componentId});
+    </insert>
+</mapper>
