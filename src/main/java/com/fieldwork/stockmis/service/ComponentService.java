@@ -32,4 +32,12 @@ public interface ComponentService {
      * 出库失败，返回false
      */
     Boolean takeFromStorage(Operation outputOperation, Component component);
+
+    /**
+     * 对指定大类进行盘点
+     * @param checkClass
+     * @return
+     * 返回一个有两列的矩阵，第一列为配件号，第二列为配件数量
+     */
+    String[][] checkComponentIdAndCount(String checkClass);
 }

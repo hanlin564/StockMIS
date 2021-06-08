@@ -65,6 +65,13 @@ public class MainFram extends JFrame {
         JButton checkButton = new JButton("盘点");
         checkButton.setLocation(280, 33);
         checkButton.setSize(80, 30);
+        checkButton.addActionListener((evnet) -> {
+            String checkClass = checkComboBox.getSelectedItem().toString();
+            StockConstant.constantMap.put("checkClass", checkClass);
+
+            InventoryFram inventoryFram = SpringUtil.getBean(InventoryFram.class);
+            inventoryFram.setVisible(true);
+        });
         panel.add(checkButton);
 
         JLabel componentIdLable = new JLabel("配件号:");

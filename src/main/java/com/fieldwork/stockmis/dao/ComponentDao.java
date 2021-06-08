@@ -4,6 +4,8 @@ import com.fieldwork.stockmis.entity.Component;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author whl
  * @date 2021/6/7 12:52
@@ -53,4 +55,6 @@ public interface ComponentDao {
      * 返回1，说明这配件在仓库中
      */
     Integer getComponentCountById(@Param("componentId") Integer componentId);
+
+    List<Component> getComponentsByClass(@Param("componentClass") String componentClass);
 }

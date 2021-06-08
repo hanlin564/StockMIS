@@ -30,4 +30,8 @@
     <select id="getComponentCountById" resultType="int">
         select count(1) from component where component_id = #{componentId}
     </select>
+
+    <select id="getComponentsByClass" resultMap="ComponentMap">
+        select * from component where class = #{componentClass}
+    </select>
 </mapper>

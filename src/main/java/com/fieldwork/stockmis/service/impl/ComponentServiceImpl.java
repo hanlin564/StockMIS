@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author whl
  * @date 2021/6/6 22:00
@@ -90,6 +92,31 @@ public class ComponentServiceImpl implements ComponentService {
         } catch (Exception e) {
             log.error("出库失败: {}", e.getMessage());
             return false;
+        }
+    }
+
+    @Override
+    public String[][] checkComponentIdAndCount(String checkClass) {
+        try {
+            if ("--请选择要盘点的配件大类--".equals(checkClass)) {
+                log.error("请选择一个大类进行盘点");
+                return null;
+            }
+
+            List<Component> componentList = componentDao.getComponentsByClass(checkClass);
+            int len = componentList.size();
+
+            String[][] result = new String[len][2];
+            int index = 0;
+            for (Component component : componentList) {
+                result[index][0] = String.valueOf(component.getComponentId());
+                result[index][1] = String.valueOf(component.getCount());
+                index++;
+            }
+            return result;
+        } catch (Exception e) {
+            log.error("盘点失败");
+            return null;
         }
     }
 }
