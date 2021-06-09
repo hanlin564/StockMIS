@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -47,7 +49,7 @@ public class InventoryFram extends JFrame {
         JPanel jPanelBot = new JPanel(new BorderLayout());
         //底部部分的返回按钮
         JButton backButton = new JButton("back to main menu");
-        backButton.addActionListener((event) -> dispose());
+        backButton.addActionListener(event -> dispose());
         //底部部分显示的查询时间文本
         JLabel jLabel = new JLabel();
         jPanelBot.add(backButton,BorderLayout.WEST);
@@ -64,18 +66,70 @@ public class InventoryFram extends JFrame {
         addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
+
                 Date date = new Date();
                 jLabel.setText("盘点截止日期" + date);
 
                 String checkClass = StockConstant.constantMap.get("checkClass").toString();
-                Object[][] results = componentService.checkComponentIdAndCount(checkClass);
+//                Object[][] results = componentService.checkComponentIdAndCount(checkClass);
+                jTab.setModel(new TableModel() {
+                    String[] name = {"配件号","数量"};
+                    Object[][] data = componentService.checkComponentIdAndCount(checkClass);
 
-                int index = 0;
-                int cols = results[0].length;
-                for (Object[] result : results) {
-                    System.arraycopy(result, 0, tabData[index], 0, cols);
-                    index++;
-                }
+                    @Override
+                    public int getRowCount() {
+                        return data.length;
+                    }
+
+                    @Override
+                    public int getColumnCount() {
+                        return data[0].length;
+                    }
+
+                    @Override
+                    public String getColumnName(int columnIndex) {
+                        return name[columnIndex];
+                    }
+
+                    @Override
+                    public Class<?> getColumnClass(int columnIndex) {
+                        return Object.class;
+                    }
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return false;
+                    }
+
+                    @Override
+                    public Object getValueAt(int rowIndex, int columnIndex) {
+                        return data[rowIndex][columnIndex];
+                    }
+
+                    @Override
+                    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+                        data[rowIndex][columnIndex] = aValue;
+                    }
+
+                    @Override
+                    public void addTableModelListener(TableModelListener l) {
+
+                    }
+
+                    @Override
+                    public void removeTableModelListener(TableModelListener l) {
+
+                    }
+                });
+
+//                int index = 0;
+//                int cols = results[0].length;
+//                for (Object[] result : results) {
+//                    System.arraycopy(result, 0, tabData[index], 0, cols);
+//                    index++;
+//                }
+
+
             }
 
             @Override

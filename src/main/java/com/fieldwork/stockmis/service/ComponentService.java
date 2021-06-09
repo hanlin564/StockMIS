@@ -68,4 +68,14 @@ public interface ComponentService {
      * 返回一个10列的矩阵
      */
     String[][] searchOperationByTime(Date startDateTime, Date endDateTime);
+
+    /**
+     * 在出库时检查用户输入的位置信息是否存放着用户想要出库的对应配件
+     * @param outputOperation
+     * @param component
+     * 封装的配件信息中的count属性不是此配件的现存数量，而是用户想出库的配件数量
+     * @return
+     * 若有，返回true；若无，返回false
+     */
+    Boolean checkComponentAndPosition(Operation outputOperation, Component component);
 }

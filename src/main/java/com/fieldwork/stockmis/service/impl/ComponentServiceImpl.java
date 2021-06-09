@@ -65,8 +65,8 @@ public class ComponentServiceImpl implements ComponentService {
         try {
 
 
-            if (componentDao.getComponentCountById(component.getComponentId()) == 0) {
-                log.error("出库失败，此配件不在数据库中");
+            if (!checkComponentAndPosition(outputOperation, component)) {
+                log.error("出库失败，输入的信息有误");
                 return false;
             }
             Component c = componentDao.getComponentById(component.getComponentId());
@@ -201,6 +201,29 @@ public class ComponentServiceImpl implements ComponentService {
         } catch (Exception e) {
             log.error("查询操作记录失败: {}", e.getMessage());
             return null;
+        }
+    }
+
+    @Override
+    public Boolean checkComponentAndPosition(Operation outputOperation, Component component) {
+        try {
+            //1.先检查这个component是否在component表中，且要检查用户输入的数据能否和表中的记录相匹配（除了count属性）
+            Component c = componentDao.getComponentById(component.getComponentId());
+            if (!c.getComponentId().equals(component.getComponentId()) || !c.getComponentClass().equals(component.getComponentClass())
+            || !c.getComponentSpecies().equals(component.getComponentSpecies()) || !c.getComponentType().equals(component.getComponentType())) {
+                return false;
+            }
+
+            //2.再检查operation将要操作的位置是否能和指定配件存在的位置相匹配
+            Integer cid = positionDao.getComponentIdByPosition(outputOperation.getStockNo(), outputOperation.getPartNo(), outputOperation.getShelfNo(), outputOperation.getTierNo());
+            if (!cid.equals(c.getComponentId())) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception e) {
+            log.error("检查失败: {}", e.getMessage());
+            return false;
         }
     }
 }
