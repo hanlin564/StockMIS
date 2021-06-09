@@ -3,15 +3,13 @@ package com.fieldwork.stockmis.service.impl;
 import com.fieldwork.stockmis.dao.ComponentDao;
 import com.fieldwork.stockmis.dao.OperationDao;
 import com.fieldwork.stockmis.dao.PositionDao;
-import com.fieldwork.stockmis.entity.Component;
-import com.fieldwork.stockmis.entity.Operation;
-import com.fieldwork.stockmis.entity.Position;
-import com.fieldwork.stockmis.entity.SearchResult;
+import com.fieldwork.stockmis.entity.*;
 import com.fieldwork.stockmis.service.ComponentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -125,20 +123,20 @@ public class ComponentServiceImpl implements ComponentService {
     @Override
     public String[][] searchComponentById(String idSearchText) {
         try {
-            List<SearchResult> resultList = componentDao.searchComponentById(idSearchText);
+            List<ComponentSearchResult> resultList = componentDao.searchComponentById(idSearchText);
             int len = resultList.size();
 
             String[][] result = new String[len][8];
             int index = 0;
-            for (SearchResult searchResult : resultList) {
-                result[index][0] = String.valueOf(searchResult.getComponentId());
-                result[index][1] = searchResult.getComponentClass();
-                result[index][2] = searchResult.getComponentSpecies();
-                result[index][3] = searchResult.getComponentType();
-                result[index][4] = String.valueOf(searchResult.getStockNo());
-                result[index][5] = String.valueOf(searchResult.getPartNo());
-                result[index][6] = String.valueOf(searchResult.getShelfNo());
-                result[index][7] = String.valueOf(searchResult.getTierNo());
+            for (ComponentSearchResult componentSearchResult : resultList) {
+                result[index][0] = String.valueOf(componentSearchResult.getComponentId());
+                result[index][1] = componentSearchResult.getComponentClass();
+                result[index][2] = componentSearchResult.getComponentSpecies();
+                result[index][3] = componentSearchResult.getComponentType();
+                result[index][4] = String.valueOf(componentSearchResult.getStockNo());
+                result[index][5] = String.valueOf(componentSearchResult.getPartNo());
+                result[index][6] = String.valueOf(componentSearchResult.getShelfNo());
+                result[index][7] = String.valueOf(componentSearchResult.getTierNo());
                 index++;
             }
             return result;
@@ -151,25 +149,57 @@ public class ComponentServiceImpl implements ComponentService {
     @Override
     public Object[][] searchComponentByPosition(Position positionInfo) {
         try {
-            List<SearchResult> resultList = positionDao.searchComponentByPosition(positionInfo.getStockNo(), positionInfo.getPartNo(), positionInfo.getShelfNo(), positionInfo.getTierNo());
+            List<ComponentSearchResult> resultList = positionDao.searchComponentByPosition(positionInfo.getStockNo(), positionInfo.getPartNo(), positionInfo.getShelfNo(), positionInfo.getTierNo());
             int len = resultList.size();
 
             String[][] result = new String[len][8];
             int index = 0;
-            for (SearchResult searchResult : resultList) {
-                result[index][0] = String.valueOf(searchResult.getComponentId());
-                result[index][1] = searchResult.getComponentClass();
-                result[index][2] = searchResult.getComponentSpecies();
-                result[index][3] = searchResult.getComponentType();
-                result[index][4] = String.valueOf(searchResult.getStockNo());
-                result[index][5] = String.valueOf(searchResult.getPartNo());
-                result[index][6] = String.valueOf(searchResult.getShelfNo());
-                result[index][7] = String.valueOf(searchResult.getTierNo());
+            for (ComponentSearchResult componentSearchResult : resultList) {
+                result[index][0] = String.valueOf(componentSearchResult.getComponentId());
+                result[index][1] = componentSearchResult.getComponentClass();
+                result[index][2] = componentSearchResult.getComponentSpecies();
+                result[index][3] = componentSearchResult.getComponentType();
+                result[index][4] = String.valueOf(componentSearchResult.getStockNo());
+                result[index][5] = String.valueOf(componentSearchResult.getPartNo());
+                result[index][6] = String.valueOf(componentSearchResult.getShelfNo());
+                result[index][7] = String.valueOf(componentSearchResult.getTierNo());
                 index++;
             }
             return result;
         } catch (Exception e) {
             log.error("查询位置失败: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public String[][] searchOperationByTime(Date startDateTime, Date endDateTime) {
+        try {
+            List<OperationSearchResult> operationSearchResults = operationDao.searchOperationByDateTime(startDateTime, endDateTime);
+            int len = operationSearchResults.size();
+
+            String[][] result = new String[len][10];
+            int index = 0;
+            for (OperationSearchResult operationSearchResult : operationSearchResults) {
+                result[index][0] = String.valueOf(operationSearchResult.getOperationId());
+                if (operationSearchResult.getType() == 0) {
+                    result[index][1] = "入库";
+                } else {
+                    result[index][1] = "出库";
+                }
+                result[index][2] = String.valueOf(operationSearchResult.getComponentId());
+                result[index][3] = operationSearchResult.getUserId();
+                result[index][4] = String.valueOf(operationSearchResult.getTime());
+                result[index][5] = String.valueOf(operationSearchResult.getCount());
+                result[index][6] = String.valueOf(operationSearchResult.getStockNo());
+                result[index][7] = String.valueOf(operationSearchResult.getPartNo());
+                result[index][8] = String.valueOf(operationSearchResult.getShelfNo());
+                result[index][9] = String.valueOf(operationSearchResult.getTierNo());
+                index++;
+            }
+            return result;
+        } catch (Exception e) {
+            log.error("查询操作记录失败: {}", e.getMessage());
             return null;
         }
     }

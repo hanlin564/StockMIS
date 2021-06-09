@@ -1,7 +1,5 @@
 package com.fieldwork.stockmis.view;
 
-import com.fieldwork.stockmis.dao.PositionDao;
-import com.fieldwork.stockmis.entity.Position;
 import com.fieldwork.stockmis.service.ComponentService;
 import com.fieldwork.stockmis.utils.StockConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,23 +9,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Date;
 
 /**
  * @author hy
- * @date 2021/6/8 15:42
+ * @date 2021/6/9 11:49
  */
 @Component
-public class ConsequenceFram extends JFrame{
+public class OperationSearchFram extends JFrame {
 
     @Autowired
     ComponentService componentService;
 
-    @Autowired
-    PositionDao positionDao;
-
-    public ConsequenceFram() {
+    public OperationSearchFram() {
         setTitle("查询结果");
         setSize(800, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         JButton back=new JButton("返回");
@@ -44,25 +41,18 @@ public class ConsequenceFram extends JFrame{
         add(p1,BorderLayout.SOUTH);
 
     }
-
     public JTable table(){
-        Object[][] obj=new Object[5][8];
-        String[] name={"配件号","大类","种","型号","仓库号","分区号","货架号","层"};
+        Object[][] obj=new Object[20][10];
+        String[] name={"操作号","操作方式","配件号","操作者id","操作时间","操作数量","仓库号","分区号","货架号","层数"};
         JTable table=new JTable(obj,name);
         addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-                String IDSearchText = (String) StockConstant.constantMap.get("IDSearchText");
+                Date startDateTime = (Date) StockConstant.constantMap.get("startDateTime");
+                Date endDateTime = (Date) StockConstant.constantMap.get("endDateTime");
 
                 Object[][] results;
-
-                if (IDSearchText != null) {
-                     results = componentService.searchComponentById(IDSearchText);
-                } else {
-                    Position positionInfo = (Position) StockConstant.constantMap.get("positionInfo");
-                    results = componentService.searchComponentByPosition(positionInfo);
-                }
-
+                results = componentService.searchOperationByTime(startDateTime, endDateTime);
 
                 int index = 0;
                 int cols = results[0].length;

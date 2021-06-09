@@ -4,6 +4,8 @@ import com.fieldwork.stockmis.entity.Component;
 import com.fieldwork.stockmis.entity.Operation;
 import com.fieldwork.stockmis.entity.Position;
 
+import java.util.Date;
+
 /**
  * @author whl
  * @date 2021/6/6 21:54
@@ -57,4 +59,13 @@ public interface ComponentService {
      * 返回一个8列矩阵
      */
     Object[][] searchComponentByPosition(Position position);
+
+    /**
+     * 根据给定的开始与截止时间，查询这个区间内的所有入/出库记录
+     * @param startDateTime
+     * @param endDateTime
+     * @return
+     * 返回一个10列的矩阵
+     */
+    String[][] searchOperationByTime(Date startDateTime, Date endDateTime);
 }

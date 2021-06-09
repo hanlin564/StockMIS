@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author whl
+ * @author whl & tyl
  * @date 2021/6/7 16:08
  */
 @Component

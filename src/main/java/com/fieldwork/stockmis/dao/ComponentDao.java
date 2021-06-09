@@ -1,7 +1,7 @@
 package com.fieldwork.stockmis.dao;
 
 import com.fieldwork.stockmis.entity.Component;
-import com.fieldwork.stockmis.entity.SearchResult;
+import com.fieldwork.stockmis.entity.ComponentSearchResult;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -64,5 +64,5 @@ public interface ComponentDao {
      * @param idSearchText
      * @return
      */
-    List<SearchResult> searchComponentById(@Param("idSearchText") String idSearchText);
+    List<ComponentSearchResult> searchComponentById(@Param("idSearchText") String idSearchText);
 }

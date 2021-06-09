@@ -152,7 +152,13 @@ public class MainFram extends JFrame {
         inputButton.setBounds(580, 33, 80, 80);
         inputButton.addActionListener((event) -> {
             Operation inputOperation = generateAnOperationObject(0);
-            com.fieldwork.stockmis.entity.Component component = generateAComponentObject();
+
+            com.fieldwork.stockmis.entity.Component component = null;
+            try {
+                component = generateAComponentObject();
+            } catch (Exception e) {
+
+            }
 
             if (componentService.putInStorage(inputOperation, component)) {
                 log.info("入库成功");
@@ -172,7 +178,13 @@ public class MainFram extends JFrame {
         outputButton.setBounds(580, 120, 80, 80);
         outputButton.addActionListener((event) -> {
             Operation outputOperation = generateAnOperationObject(1);
-            com.fieldwork.stockmis.entity.Component component = generateAComponentObject();
+
+            com.fieldwork.stockmis.entity.Component component = null;
+            try {
+                component = generateAComponentObject();
+            } catch (Exception e) {
+
+            }
 
             if (componentService.takeFromStorage(outputOperation, component)) {
                 log.info("出库成功");
@@ -197,7 +209,14 @@ public class MainFram extends JFrame {
         JButton IDSearchButton = new JButton("查询配件号");
         IDSearchButton.setBounds(715, 70, 120, 30);
         IDSearchButton.addActionListener((event) -> {
-            String IDSearchText = IDsearchField.getText();
+
+            String IDSearchText = null;
+            try {
+                IDSearchText = IDsearchField.getText();
+            } catch (Exception e) {
+
+            }
+
             StockConstant.constantMap.put("IDSearchText", IDSearchText);
 
             ConsequenceFram consequenceFram = SpringUtil.getBean(ConsequenceFram.class);
@@ -241,10 +260,15 @@ public class MainFram extends JFrame {
         locationSearchButton.setBounds(905, 145, 120, 30);
         locationSearchButton.addActionListener((event) -> {
             Position positionInfo = new Position();
-            positionInfo.setStockNo(Integer.valueOf(stockSearchField.getText()));
-            positionInfo.setPartNo(Integer.valueOf(partSearchField.getText()));
-            positionInfo.setShelfNo(Integer.valueOf(shelfSearchField.getText()));
-            positionInfo.setTierNo(Integer.valueOf(tierSearchField.getText()));
+
+            try {
+                positionInfo.setStockNo(Integer.valueOf(stockSearchField.getText()));
+                positionInfo.setPartNo(Integer.valueOf(partSearchField.getText()));
+                positionInfo.setShelfNo(Integer.valueOf(shelfSearchField.getText()));
+                positionInfo.setTierNo(Integer.valueOf(tierSearchField.getText()));
+            } catch (NumberFormatException e) {
+
+            }
 
             StockConstant.constantMap.put("positionInfo", positionInfo);
 
@@ -271,6 +295,15 @@ public class MainFram extends JFrame {
 
         JButton dateSearchButton = new JButton("查询入/出库时间");
         dateSearchButton.setBounds(665, 230, 150, 30);
+        dateSearchButton.addActionListener((event) -> {
+            Date startDateTime = startDate.getDate();
+            Date endDateTime = endDate.getDate();
+            StockConstant.constantMap.put("startDateTime", startDateTime);
+            StockConstant.constantMap.put("endDateTime", endDateTime);
+
+            OperationSearchFram operationSearchFram = SpringUtil.getBean(OperationSearchFram.class);
+            operationSearchFram.setVisible(true);
+        });
         panel.add(dateSearchButton);
 
         JLabel noteLable = new JLabel("备忘录");

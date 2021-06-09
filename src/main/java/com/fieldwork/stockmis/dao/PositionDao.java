@@ -1,6 +1,6 @@
 package com.fieldwork.stockmis.dao;
 
-import com.fieldwork.stockmis.entity.SearchResult;
+import com.fieldwork.stockmis.entity.ComponentSearchResult;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -52,5 +52,7 @@ public interface PositionDao {
      * @param tierNo
      * @return
      */
-    List<SearchResult> searchComponentByPosition(@Param("stockNo") Integer stockNo, @Param("partNo") Integer partNo, @Param("shelfNo") Integer shelfNo, @Param("tierNo") Integer tierNo);
+    List<ComponentSearchResult> searchComponentByPosition(@Param("stockNo") Integer stockNo, @Param("partNo") Integer partNo, @Param("shelfNo") Integer shelfNo, @Param("tierNo") Integer tierNo);
+
+
 }

@@ -71,9 +71,9 @@ public class InventoryFram extends JFrame {
                 Object[][] results = componentService.checkComponentIdAndCount(checkClass);
 
                 int index = 0;
+                int cols = results[0].length;
                 for (Object[] result : results) {
-                    tabData[index][0] = result[0];
-                    tabData[index][1] = result[1];
+                    System.arraycopy(result, 0, tabData[index], 0, cols);
                     index++;
                 }
             }
