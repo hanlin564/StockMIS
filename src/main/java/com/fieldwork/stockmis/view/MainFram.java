@@ -1,6 +1,7 @@
 package com.fieldwork.stockmis.view;
 
 import com.fieldwork.stockmis.entity.Operation;
+import com.fieldwork.stockmis.entity.Position;
 import com.fieldwork.stockmis.service.ComponentService;
 import com.fieldwork.stockmis.utils.DateChooser;
 import com.fieldwork.stockmis.utils.SpringUtil;
@@ -195,6 +196,13 @@ public class MainFram extends JFrame {
 
         JButton IDSearchButton = new JButton("查询配件号");
         IDSearchButton.setBounds(715, 70, 120, 30);
+        IDSearchButton.addActionListener((event) -> {
+            String IDSearchText = IDsearchField.getText();
+            StockConstant.constantMap.put("IDSearchText", IDSearchText);
+
+            ConsequenceFram consequenceFram = SpringUtil.getBean(ConsequenceFram.class);
+            consequenceFram.setVisible(true);
+        });
         panel.add(IDSearchButton);
 
         JLabel stockSearchLable = new JLabel("仓库号:");
@@ -231,6 +239,19 @@ public class MainFram extends JFrame {
 
         JButton locationSearchButton = new JButton("查询指定位置");
         locationSearchButton.setBounds(905, 145, 120, 30);
+        locationSearchButton.addActionListener((event) -> {
+            Position positionInfo = new Position();
+            positionInfo.setStockNo(Integer.valueOf(stockSearchField.getText()));
+            positionInfo.setPartNo(Integer.valueOf(partSearchField.getText()));
+            positionInfo.setShelfNo(Integer.valueOf(shelfSearchField.getText()));
+            positionInfo.setTierNo(Integer.valueOf(tierSearchField.getText()));
+
+            StockConstant.constantMap.put("positionInfo", positionInfo);
+
+            ConsequenceFram consequenceFram = SpringUtil.getBean(ConsequenceFram.class);
+            consequenceFram.setVisible(true);
+
+        });
         panel.add(locationSearchButton);
 
         DateChooser startDate = DateChooser.getInstance("yyyy-MM-dd");

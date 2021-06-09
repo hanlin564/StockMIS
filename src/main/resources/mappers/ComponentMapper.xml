@@ -11,6 +11,17 @@
         <result property="count" column="count"/>
     </resultMap>
 
+    <resultMap id="SearchMap" type="com.fieldwork.stockmis.entity.SearchResult">
+        <result property="componentId" column="component_id"/>
+        <result property="componentClass" column="class"/>
+        <result property="componentSpecies" column="species"/>
+        <result property="componentType" column="type"/>
+        <result property="stockNo" column="stock_no"/>
+        <result property="partNo" column="part_no"/>
+        <result property="shelfNo" column="shelf_no"/>
+        <result property="tierNo" column="tier_no"/>
+    </resultMap>
+
     <update id="updateCompenentCount">
         update component set count = count + #{addOrMinusCount} where component_id = #{componentId}
     </update>
@@ -33,5 +44,11 @@
 
     <select id="getComponentsByClass" resultMap="ComponentMap">
         select * from component where class = #{componentClass}
+    </select>
+
+    <select id="searchComponentById" resultMap="SearchMap">
+        select component.component_id, class, species, type, stock_no, part_no, shelf_no, tier_no
+        from component left join position on component.component_id = position.component_id
+        where component.component_id = #{idSearchText}
     </select>
 </mapper>

@@ -1,7 +1,10 @@
 package com.fieldwork.stockmis.dao;
 
+import com.fieldwork.stockmis.entity.SearchResult;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author whl
@@ -40,4 +43,14 @@ public interface PositionDao {
      * 成功，返回true；失败，返回false
      */
     Boolean deletePositionByComponentId(@Param("componentId") Integer componentId);
+
+    /**
+     * 根据给定位置查询配件详细信息
+     * @param stockNo
+     * @param partNo
+     * @param shelfNo
+     * @param tierNo
+     * @return
+     */
+    List<SearchResult> searchComponentByPosition(@Param("stockNo") Integer stockNo, @Param("partNo") Integer partNo, @Param("shelfNo") Integer shelfNo, @Param("tierNo") Integer tierNo);
 }

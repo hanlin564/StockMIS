@@ -2,6 +2,7 @@ package com.fieldwork.stockmis.service;
 
 import com.fieldwork.stockmis.entity.Component;
 import com.fieldwork.stockmis.entity.Operation;
+import com.fieldwork.stockmis.entity.Position;
 
 /**
  * @author whl
@@ -40,4 +41,20 @@ public interface ComponentService {
      * 返回一个有两列的矩阵，第一列为配件号，第二列为配件数量
      */
     String[][] checkComponentIdAndCount(String checkClass);
+
+    /**
+     * 根据配件号搜索配件
+     * @param idSearchText
+     * @return
+     * 返回一个8列矩阵
+     */
+    Object[][] searchComponentById(String idSearchText);
+
+    /**
+     * 根据位置搜索配件
+     * @param position
+     * @return
+     * 返回一个8列矩阵
+     */
+    Object[][] searchComponentByPosition(Position position);
 }

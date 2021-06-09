@@ -1,6 +1,7 @@
 package com.fieldwork.stockmis.dao;
 
 import com.fieldwork.stockmis.entity.Component;
+import com.fieldwork.stockmis.entity.SearchResult;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -57,4 +58,11 @@ public interface ComponentDao {
     Integer getComponentCountById(@Param("componentId") Integer componentId);
 
     List<Component> getComponentsByClass(@Param("componentClass") String componentClass);
+
+    /**
+     * 根据配件号查询配件的型号、数量、位置等详细信息
+     * @param idSearchText
+     * @return
+     */
+    List<SearchResult> searchComponentById(@Param("idSearchText") String idSearchText);
 }

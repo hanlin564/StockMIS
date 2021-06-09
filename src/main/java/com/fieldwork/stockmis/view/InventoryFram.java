@@ -47,9 +47,7 @@ public class InventoryFram extends JFrame {
         JPanel jPanelBot = new JPanel(new BorderLayout());
         //底部部分的返回按钮
         JButton backButton = new JButton("back to main menu");
-        backButton.addActionListener((event) -> {
-            dispose();
-        });
+        backButton.addActionListener((event) -> dispose());
         //底部部分显示的查询时间文本
         JLabel jLabel = new JLabel();
         jPanelBot.add(backButton,BorderLayout.WEST);

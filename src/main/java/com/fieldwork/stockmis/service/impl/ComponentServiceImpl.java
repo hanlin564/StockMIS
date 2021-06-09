@@ -5,6 +5,8 @@ import com.fieldwork.stockmis.dao.OperationDao;
 import com.fieldwork.stockmis.dao.PositionDao;
 import com.fieldwork.stockmis.entity.Component;
 import com.fieldwork.stockmis.entity.Operation;
+import com.fieldwork.stockmis.entity.Position;
+import com.fieldwork.stockmis.entity.SearchResult;
 import com.fieldwork.stockmis.service.ComponentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +117,59 @@ public class ComponentServiceImpl implements ComponentService {
             }
             return result;
         } catch (Exception e) {
-            log.error("盘点失败");
+            log.error("盘点失败: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public String[][] searchComponentById(String idSearchText) {
+        try {
+            List<SearchResult> resultList = componentDao.searchComponentById(idSearchText);
+            int len = resultList.size();
+
+            String[][] result = new String[len][8];
+            int index = 0;
+            for (SearchResult searchResult : resultList) {
+                result[index][0] = String.valueOf(searchResult.getComponentId());
+                result[index][1] = searchResult.getComponentClass();
+                result[index][2] = searchResult.getComponentSpecies();
+                result[index][3] = searchResult.getComponentType();
+                result[index][4] = String.valueOf(searchResult.getStockNo());
+                result[index][5] = String.valueOf(searchResult.getPartNo());
+                result[index][6] = String.valueOf(searchResult.getShelfNo());
+                result[index][7] = String.valueOf(searchResult.getTierNo());
+                index++;
+            }
+            return result;
+        } catch (Exception e) {
+            log.error("查询配件号失败: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public Object[][] searchComponentByPosition(Position positionInfo) {
+        try {
+            List<SearchResult> resultList = positionDao.searchComponentByPosition(positionInfo.getStockNo(), positionInfo.getPartNo(), positionInfo.getShelfNo(), positionInfo.getTierNo());
+            int len = resultList.size();
+
+            String[][] result = new String[len][8];
+            int index = 0;
+            for (SearchResult searchResult : resultList) {
+                result[index][0] = String.valueOf(searchResult.getComponentId());
+                result[index][1] = searchResult.getComponentClass();
+                result[index][2] = searchResult.getComponentSpecies();
+                result[index][3] = searchResult.getComponentType();
+                result[index][4] = String.valueOf(searchResult.getStockNo());
+                result[index][5] = String.valueOf(searchResult.getPartNo());
+                result[index][6] = String.valueOf(searchResult.getShelfNo());
+                result[index][7] = String.valueOf(searchResult.getTierNo());
+                index++;
+            }
+            return result;
+        } catch (Exception e) {
+            log.error("查询位置失败: {}", e.getMessage());
             return null;
         }
     }
